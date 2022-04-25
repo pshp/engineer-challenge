@@ -73,12 +73,6 @@ describe("Requests to server correctly processed", () => {
     });
   });
 
-  it("GET /policies --> status are only `ACTIVE` or `PENDING`", async () => {
-    allPolicies.forEach((policy) => {
-      expect(["ACTIVE", "PENDING"]).toContain(policy.status);
-    });
-  });
-
   it("GET /policies?search=BARMER --> Check search functionality is working", async () => {
     const singlePolicy = await request(app)
       .get("/policies?search=BARMER")
