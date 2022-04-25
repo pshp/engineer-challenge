@@ -34,4 +34,13 @@ describe("Requests to server correctly processed", () => {
       expect.arrayContaining([expect.objectContaining(policy)])
     );
   }, 10000);
+
+  it("GET /policies --> Insurance types are either `LIABILITY`, `HOUSEHOLD`, `HEALTH`", async () => {
+    const policies = await request(app).get("/policies").send();
+    expect(policies.statusCode).toEqual(200);
+    expect(["LIABILITY", "HOUSEHOLD", "HEALTH"]).toContain(
+      policies.body[0].insuranceType
+    );
+  });
+
 });
