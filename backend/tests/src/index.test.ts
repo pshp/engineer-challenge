@@ -29,10 +29,10 @@ describe("server responding", () => {
 describe("Requests to server correctly processed", () => {
   // GET all policies once before tests
   let res: any;
-  let policies: Policy[] = [];
+  let allPolicies: Policy[] = [];
   beforeAll(async () => {
     res = await request(app).get("/policies").send();
-    policies = res.body;
+    allPolicies = res.body;
   }, 10000);
 
   it("GET /policies --> returns array of policies with correct data types", async () => {
@@ -54,13 +54,13 @@ describe("Requests to server correctly processed", () => {
     };
 
     expect(res.statusCode).toEqual(200);
-    expect(policies).toEqual(
+    expect(allPolicies).toEqual(
       expect.arrayContaining([expect.objectContaining(policyCheck)])
     );
   });
 
   it("GET /policies --> Insurance types: `LIABILITY`, `HOUSEHOLD`, `HEALTH`", async () => {
-    policies.forEach((policy) => {
+    allPolicies.forEach((policy) => {
       expect(["LIABILITY", "HOUSEHOLD", "HEALTH"]).toContain(
         policy.insuranceType
       );
@@ -68,8 +68,24 @@ describe("Requests to server correctly processed", () => {
   });
 
   it("GET /policies --> status are only `ACTIVE` or `PENDING`", async () => {
-    policies.forEach((policy) => {
+    allPolicies.forEach((policy) => {
       expect(["ACTIVE", "PENDING"]).toContain(policy.status);
     });
+  });
+
+  it("GET /policies --> status are only `ACTIVE` or `PENDING`", async () => {
+    allPolicies.forEach((policy) => {
+      expect(["ACTIVE", "PENDING"]).toContain(policy.status);
+    });
+  });
+
+  it("GET /policies?search=BARMER --> Check search functionality is working", async () => {
+    const singlePolicy = await request(app)
+      .get("/policies?search=BARMER")
+      .send();
+    expect(singlePolicy.body.length).toBeLessThan(allPolicies.length);
+    expect(singlePolicy.body).toEqual(
+      expect.arrayContaining([expect.objectContaining({ provider: "BARMER" })])
+    );
   });
 });
