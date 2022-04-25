@@ -9,7 +9,7 @@ app.use(express.json())
 app.get('/policies', async (req: Request, res: Response) => {
   const { search } = req.query;
 
-  const or: Prisma.PolicyWhereInput = search
+  const searchQuery: Prisma.PolicyWhereInput = search
     ? {
       OR: [
         { provider: { contains: search as string, mode: 'insensitive' } },
@@ -21,7 +21,7 @@ app.get('/policies', async (req: Request, res: Response) => {
 
   const policies = await prisma.policy.findMany({
     where: {
-      ...or
+      ...searchQuery,
     },
     select: {
       id: true,
