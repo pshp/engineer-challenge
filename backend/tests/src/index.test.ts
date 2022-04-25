@@ -1,5 +1,7 @@
-import request from "supertest";
+import request from 'supertest';
 import app from '../../src/index';
+import 'jest';
+import 'expect-more-jest';
 
 describe('server responding', () => {
   it('GET --> status 200', () => {
@@ -7,4 +9,36 @@ describe('server responding', () => {
    .get('/')
    .expect(200);
   });
-});
+})
+
+describe('Requests to server correctly processed', () => {
+
+  it('GET /policies --> returns array of polcies', async () => {
+
+    const customer = {
+      id: expect.any(String),
+      firstName: expect.any(String),
+      lastName: expect.any(String),
+      dateOfBirth: expect.any(String)
+    }
+
+    const policy = {
+      id: expect.any(String),
+      provider: expect.any(String),
+      insuranceType: expect.any(String),
+      status: expect.any(String),
+      startDate: expect.any(String),
+      endDate: expect.toBeNullableOf(String),
+      customer: customer,
+    }
+
+    const policies = await request(app).get('/policies').send();
+    expect(policies.statusCode).toEqual(200);
+    expect(policies.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining(policy)
+      ])
+    );
+
+  },10000)
+})
