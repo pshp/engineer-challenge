@@ -83,7 +83,6 @@ describe("Requests to server correctly processed", () => {
     const singlePolicy = await request(app)
       .get("/policies?search=BARMER")
       .send();
-    expect(singlePolicy.body.length).toBeLessThan(allPolicies.length);
     expect(singlePolicy.body).toEqual(
       expect.arrayContaining([expect.objectContaining({ provider: "BARMER" })])
     );
