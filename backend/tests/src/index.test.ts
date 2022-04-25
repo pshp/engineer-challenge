@@ -1,7 +1,10 @@
 import request from "supertest";
+import app from '../../src/index';
 
-describe('jest is working', () => {
-  it('should work', () => {
-    expect(true).toBeTruthy();
+describe('server responding', () => {
+  it('GET --> status 200', () => {
+   return request(app)
+   .get('/')
+   .expect(200);
   });
 });
