@@ -19,9 +19,17 @@ app.get('/policies', async (req: Request, res: Response) => {
     }
     : {};
 
+    const statusFilter: Prisma.PolicyWhereInput = {
+      OR: [
+        { status: 'ACTIVE' },
+        { status: 'PENDING' }
+      ],
+    };
+
   const policies = await prisma.policy.findMany({
     where: {
       ...searchQuery,
+      ...statusFilter
     },
     select: {
       id: true,
