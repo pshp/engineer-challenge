@@ -15,7 +15,7 @@ describe("Requests to server correctly processed", () => {
       id: expect.any(String),
       firstName: expect.any(String),
       lastName: expect.any(String),
-      dateOfBirth: expect.any(String),
+      dateOfBirth: expect.toBeIso8601(),
     };
 
     const policy = {
@@ -23,8 +23,8 @@ describe("Requests to server correctly processed", () => {
       provider: expect.any(String),
       insuranceType: expect.any(String),
       status: expect.any(String),
-      startDate: expect.any(String),
-      endDate: expect.toBeNullableOf(String),
+      startDate: expect.toBeIso8601(),
+      endDate: expect.toBeNullableOf(expect.toBeIso8601()),
       customer: customer,
     };
 
