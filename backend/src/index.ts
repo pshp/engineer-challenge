@@ -21,7 +21,7 @@ app.get('/policies', async (req: Request, res: Response) => {
 
   const policies = await prisma.policy.findMany({
     where: {
-      ...or,
+      ...or
     },
     select: {
       id: true,
