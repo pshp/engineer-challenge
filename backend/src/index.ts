@@ -1,13 +1,12 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { PrismaClient, Prisma } from '@prisma/client';
-
 const app = express();
 const port = 4000;
 const prisma = new PrismaClient();
 
 app.use(express.json())
 
-app.get('/policies', async (req, res) => {
+app.get('/policies', async (req: Request, res: Response) => {
   const { search } = req.query;
 
   const or: Prisma.PolicyWhereInput = search
