@@ -29,7 +29,8 @@
     "typescript": "4.6.3"
   },
   "scripts": {
-    "start": "nodemon"
+    "start": "nodemon",
+    "test": "jest --watchAll"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
